@@ -1,0 +1,5 @@
+[data]
+data_root             = 'path/to/data' 
+data_names            = config/train_name_all.txt
+modality_postfix      = [flair]
+file_postfix          = nii.gz
