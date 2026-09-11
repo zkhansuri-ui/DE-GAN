@@ -1,0 +1,8 @@
+checkpoints/
+*.pt
+*.pth
+*.nii.gz
+*.npz
+__pycache__/
+logs/
+
