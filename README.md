@@ -1,4 +1,4 @@
-# Enhanced DynGAN with Dynamic Parameters and Global Positional Encoding
+# Enhanced DE-GAN with Dynamic Parameters and Global Positional Encoding
 
 ## Architecture Overview
 
@@ -23,8 +23,8 @@ This implementation has two key improvements:
 ### File Structure
 ```
 models/
-├── dyngan_generator_dynamic.py   # Generator
-├── dyngan_discriminator.py       # Discriminator
+├── degan_generator_dynamic.py   # Generator
+├── degan_discriminator.py       # Discriminator
 networks/
 ├── unet.py                       # Contains ConvDDynamic, CoordConv2d
 ```
@@ -32,7 +32,7 @@ networks/
 ### Model Hierarchy
 
 ```
-EnhGANGeneratorDynamic
+DEGANGeneratorDynamic
 ├── CalibrationBlock 
 │   └── Channel-wise attention
 └── DynamicUNetBlock 
@@ -63,17 +63,17 @@ Create "data_adr.txt" file and determine requirement as bellow:
 <p> Put name of each Subject ID on "train_name_all.txt"  </p> 
 
 
-### 2. **Train the Dynamic EnhGAN**
+### 2. **Train the Dynamic DEGAN**
 
 **Test mode (CPU, 1 epoch):**
 ```bash
-python train_dyngan.py --device cpu --test
+python train_degan.py --device cpu --test
 ```
 
 **Full training (GPU):**
 
 ```bash
-python train_dyngan.py --epochs 400 --batch-size 8 --device cuda
+python train_degan.py --epochs 400 --batch-size 8 --device cuda
 ```
 
 ### 3. **Use for Enhancement**
@@ -81,12 +81,12 @@ python train_dyngan.py --epochs 400 --batch-size 8 --device cuda
 After training, use the model for enhancement:
 
 ```python
-from models.dyngan_generator_dynamic import DynGANGeneratorDynamic
+from models.degan_generator_dynamic import DEGANGeneratorDynamic
 import torch
 
 # Load model
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = DynGANGeneratorDynamic().to(device)
+model = DEGANGeneratorDynamic().to(device)
 model.load_state_dict(torch.load('path/to/data'))
 model.eval()
 
@@ -100,7 +100,7 @@ with torch.no_grad():
 
 ## Key Differences from Original EnhGAN
 
-| Feature | Original EnhGAN | Enhanced DynGAN |
+| Feature | Original EnhGAN | Enhanced DE-GAN |
 |---------|-----------------|-----------------|
 | Encoder | Standard Conv2d | ConvDDynamic + MixStyle |
 | Decoder | Standard Conv2d | CoordConv2d (spatial encoding) |
@@ -128,7 +128,7 @@ with torch.no_grad():
 
 1. **Start with test mode:**
    ```bash
-   python train_dyngan.py --device cpu --test
+   python train_degan.py --device cpu --test
    ```
 
 2. **Monitor losses:**
@@ -137,7 +137,7 @@ with torch.no_grad():
    - If D_loss → 0 too quickly, generator is winning (reduce G learning rate)
 
 3. **Save checkpoints:**
-   - Models saved every 50 epochs
+   - Models saved every 40 epochs
    - Load best checkpoint for inference
 
    ```

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
-from models.dyngan_generator_dynamic import DynGANGeneratorDynamic
+from models.degan_generator_dynamic import DEGANGeneratorDynamic
 from utils.dataset_brats2015 import Brats2015Dataset
 from utils.pdf_transform import pdf_transform
 
@@ -13,7 +13,7 @@ val_dataset = Brats2015Dataset("/path/to/data")
 val_loader  = DataLoader(val_dataset, batch_size=8, shuffle=False, num_workers=4)
 
 # Load dynamic generator
-G = DynGANGeneratorDynamic(w=64).to(device)
+G = DEGANGeneratorDynamic(w=64).to(device)
 
 ckpt_path = "/path/to/data"
 state = torch.load(ckpt_path, map_location=device)
@@ -50,4 +50,4 @@ with torch.no_grad():
         count += 1
 
 avg_mae = total_mae / count
-print(f"Validation MAE (DynGAN): {avg_mae:.6f}")
+print(f"Validation MAE (DE-GAN): {avg_mae:.6f}")

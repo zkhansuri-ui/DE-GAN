@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
-from models.dyngan_generator_dynamic import DynGANGeneratorDynamic
+from models.degan_generator_dynamic import DEGANGeneratorDynamic
 from utils.dataset_brats2015 import Brats2015Dataset
 
 def main():
@@ -35,7 +35,7 @@ def main():
     # -----------------------------
     # 2. Load model
     # -----------------------------
-    G = DynGANGeneratorDynamic()
+    G = DEGANGeneratorDynamic()
     G.to(device)
 
     print(f"Loading checkpoint from: {ckpt_path}")
@@ -79,7 +79,7 @@ def main():
                 print(f"[{batch_idx+1}/{len(test_loader)}] partial MAE: {mae_sum / n_pixels:.6f}")
 
     test_mae = mae_sum / n_pixels
-    print(f"\nTest MAE (DynGAN): {test_mae:.6f}")
+    print(f"\nTest MAE (DE-GAN): {test_mae:.6f}")
 
 if __name__ == "__main__":
     main()

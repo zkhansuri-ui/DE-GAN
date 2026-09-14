@@ -1,4 +1,4 @@
-# train_dyngan.py - Training script for Enhanced DynGAN Parameters
+# train_degan.py - Training script for Enhanced DE-GAN Parameters
 
 import os
 import re
@@ -6,15 +6,15 @@ import re
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from models.dyngan_generator_dynamic import DynGANGeneratorDynamic
-from models.dyngan_discriminator import MultiscaleDiscriminator
+from models.degan_generator_dynamic import DEGANGeneratorDynamic
+from models.degan_discriminator import MultiscaleDiscriminator
 from utils.pdf_transform import pdf_transform
 
 alpha = 0.1
 beta = 1.0
 CHECKPOINT_DIR = "trained_model"
-CHECKPOINT_BASENAME = "dyngan_dynamic_checkpoint"
-LATEST_CHECKPOINT_PATH = os.path.join(CHECKPOINT_DIR, "dyngan_dynamic_latest.pt")
+CHECKPOINT_BASENAME = "degan_dynamic_checkpoint"
+LATEST_CHECKPOINT_PATH = os.path.join(CHECKPOINT_DIR, "degan_dynamic_latest.pt")
 
 
 def ensure_checkpoint_dir():
@@ -102,7 +102,7 @@ def resolve_device(preferred_device=None):
     return torch.device("cpu")
 
 
-def train_dyngan(
+def train_degan(
     train_loader,
     epochs=400,
     device=None,
@@ -111,7 +111,7 @@ def train_dyngan(
     auto_resume=True,
 ):
     """
-    Training function for DynGAN
+    Training function for DE-GAN
     
     Args:
         train_loader: DataLoader with training data
@@ -122,7 +122,7 @@ def train_dyngan(
     device = resolve_device(device)
 
     # Initialize generator and discriminator
-    G = DynGANGeneratorDynamic(w=128, base_ch=32, use_coord_conv=True).to(device)
+    G = DEGANGeneratorDynamic(w=128, base_ch=32, use_coord_conv=True).to(device)
     D = MultiscaleDiscriminator().to(device)
 
     # Optimizers
@@ -146,7 +146,7 @@ def train_dyngan(
             return G
         start_epoch += 1
 
-    print(f"Training Enhanced DynGAN with Dynamic Parameters")
+    print(f"Training Enhanced DE-GAN with Dynamic Parameters")
     print(f"Generator: {G.__class__.__name__}")
     print(f"Using device: {device}")
     print(f"Total Generator parameters: {sum(p.numel() for p in G.parameters()):,}")
@@ -216,7 +216,7 @@ def train_dyngan(
 if __name__ == "__main__":
     import argparse
     
-    parser = argparse.ArgumentParser(description='Train Enhanced DynGAN with Dynamic Parameters')
+    parser = argparse.ArgumentParser(description='Train Enhanced DE-GAN with Dynamic Parameters')
     parser.add_argument('--epochs', type=int, default=400, help='Number of training epochs')
     parser.add_argument('--batch-size', type=int, default=8, help='Batch size')
     parser.add_argument('--checkpoint-interval', type=int, default=10,
@@ -245,10 +245,10 @@ if __name__ == "__main__":
         resume_checkpoint = find_latest_checkpoint()
     
     # Load dataset
-    from utils.dataset import BraTS2021Dataset
+    from utils.dataset import BraTS2015Dataset
     
     print("Initializing DataLoader for BraTS...")
-    train_dataset = BraTS2021Dataset(
+    train_dataset = BraTS2015Dataset(
         txt_path="config/train_name_all.txt", 
         data_root="/path/to/data"),
         samples_per_volume=5
@@ -270,7 +270,7 @@ if __name__ == "__main__":
     print()
     
     # Train model
-    model = train_dyngan(
+    model = train_degan(
         train_loader,
         epochs=args.epochs,
         device=device,
@@ -280,5 +280,5 @@ if __name__ == "__main__":
     )
     
     # Save final model
-    torch.save(model.state_dict(), "trained_model/dyngan_dynamic_final.pt")
-    print("Final model saved: trained_model/dyngan_dynamic_final.pt")
+    torch.save(model.state_dict(), "trained_model/degan_dynamic_final.pt")
+    print("Final model saved: trained_model/degan_dynamic_final.pt")

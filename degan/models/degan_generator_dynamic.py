@@ -1,4 +1,4 @@
-# Enhanced DynGAN with Dynamic Parameter Tuning and Global Positional Encoding
+# Enhanced DE-GAN with Dynamic Parameter Tuning and Global Positional Encoding
 
 import torch
 import torch.nn as nn
@@ -115,13 +115,13 @@ class DynamicUNetBlock(nn.Module):
         return self.out(d4)
 
 
-class DynGANGeneratorDynamic(nn.Module):
+class DEGANGeneratorDynamic(nn.Module):
     """
-    DynGAN with Dynamic Parameters and Global Positional Encoding
+    DE-GAN with Dynamic Parameters and Global Positional Encoding
     """
 
     def __init__(self, w=128, base_ch=32, use_coord_conv=True):
-        super(DynGANGeneratorDynamic, self).__init__()
+        super(DEGANGeneratorDynamic, self).__init__()
 
         in_channels = 1  # dynamic GAN uses FLAIR-only input
         self.calib = CalibrationBlock(in_channels=in_channels, img_size=w)

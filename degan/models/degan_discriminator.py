@@ -1,5 +1,5 @@
 
-# models/dyngan_discriminator.py
+# models/degan_discriminator.py
 
 import torch
 import torch.nn as nn

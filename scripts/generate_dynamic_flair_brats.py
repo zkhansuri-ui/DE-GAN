@@ -3,7 +3,7 @@ import nibabel as nib
 import numpy as np
 import torch
 from pathlib import Path
-from models.dyngan_generator_dynamic import DynGANGeneratorDynamic
+from models.degan_generator_dynamic import DEGANGeneratorDynamic
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -13,7 +13,7 @@ CKPT_PATH = "/path/to/data"
 
 os.makedirs(OUT_ROOT, exist_ok=True)
 
-G = DynGANGeneratorDynamic(w=128, base_ch=32, use_coord_conv=True).to(device)
+G = DEGANGeneratorDynamic(w=128, base_ch=32, use_coord_conv=True).to(device)
 G.load_state_dict(torch.load(CKPT_PATH, map_location=device))
 G.eval()
 

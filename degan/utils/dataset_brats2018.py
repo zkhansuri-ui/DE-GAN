@@ -49,7 +49,7 @@ class Brats2018Dataset(Dataset):
         flair = torch.tensor(flair_slice, dtype=torch.float32).unsqueeze(0)
         t1ce  = torch.tensor(t1ce_slice, dtype=torch.float32).unsqueeze(0)
 
-        # Resize to 128×128 (required for EnhGAN-Dynamic)
+        # Resize to 128×128 (required for DE-GAN-Dynamic)
         flair = F.interpolate(flair.unsqueeze(0), size=(128,128), mode="bilinear", align_corners=False).squeeze(0)
         t1ce  = F.interpolate(t1ce.unsqueeze(0), size=(128,128), mode="bilinear", align_corners=False).squeeze(0)
 
